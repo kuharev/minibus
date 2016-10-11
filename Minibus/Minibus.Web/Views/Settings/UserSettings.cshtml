@@ -1,0 +1,26 @@
+﻿@using Minibus.Web.Core
+@model Minibus.Data.Model.User
+
+@using (Html.BeginRouteForm(AppRoutes.Settings.User, FormMethod.Post, new Dictionary<string, object> {{"data-ajax-form", "settingsForm"}}))
+{
+	<div>
+		<div>
+			@Html.HiddenFor(x => x.Id)
+			@Html.HiddenFor(x => x.Password)
+		</div>
+		<div class="">
+			@Html.Label("Логин:")
+			@Html.TextBoxFor(x => x.Login)
+		</div>
+	
+		<div class="">
+			@Html.Label("E-mail:")
+			@Html.TextBoxFor(x => x.Email)
+		</div>
+		
+		<div>
+			<input type="button" value="Сохранить" data-ng-click="save_settings()" />
+		</div>
+		@Html.ValidationSummary()
+	</div>
+}

@@ -1,0 +1,84 @@
+﻿@using System.Security.Claims
+@using Minibus.Web.Core
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html data-ng-app='minibus'>
+
+<head>
+	<meta name='viewport' content='width=device-width' />
+	<title>Маршрутки</title>
+</head>
+
+<body>
+
+	<div class="header">
+
+		<div class='float-left'>
+			@Html.Partial(false ? "UserMenu" : "OperatorMenu")
+		</div>
+
+		<div class='float-right header-account' data-ng-controller='AccountController'>
+			<a class="button header-button"
+				 data-ng-show='!isAuthenticated'
+				 data-open-popup='@Url.HttpRouteUrl(AppRoutes.Authentication.Registration, new { })'>Создать аккаунт</a>
+			<a class="button header-button"
+				 data-ng-show='!isAuthenticated'
+				 data-open-popup='@Url.HttpRouteUrl(AppRoutes.Authentication.Login, new { })'>Войти</a>
+			<a href="#/settings" class="button header-button" data-account-button="account-menu" data-ng-show="isAuthenticated">{{login}}</a>
+			<div id="account-menu" style="display:none">
+				<a data-ng-click="logout()">Выйти</a>
+			</div>
+		</div>
+
+		<div class="float-cleaner"></div>
+
+	</div>
+
+
+	<div class="page" data-ng-view>
+	</div>
+
+	<link rel="stylesheet" href="~/Content/themes/base/all.css" />
+	<link rel="stylesheet" href="~/Content/themes/base/datepicker.css" />
+	<link rel="stylesheet" href="~/Content/styles.css" />
+	<script type='text/javascript' src='~/Scripts/jquery-2.1.1.min.js'></script>
+	<script type='text/javascript' src='~/Scripts/jquery.validate.min.js'></script>
+	<script type='text/javascript' src='~/Scripts/jquery.validate.unobtrusive.min.js'></script>
+	<script type="text/javascript" src="~/Scripts/jquery-ui.min-1.11.1.js"></script>
+	<script type="text/javascript" src="~/Scripts/jquery-ui-i18n.min.js"></script>
+	<script type='text/javascript' src='~/Scripts/angular.min.js'></script>
+	<script type='text/javascript' src='~/Scripts/angular-route.min.js'></script>
+	<script>
+		@{
+			var user = HttpContext.Current.GetOwinContext().Authentication.User;
+			var userName = user != null ? user.Claims.First(c => c.Type == ClaimTypes.Name).Value : string.Empty;
+		}
+		var app = angular.module('minibus', ['ngRoute']);
+		(function () {
+			var options = {
+				userName: '@userName',
+				routesUrl: '@Url.HttpRouteUrl(AppRoutes.RoutesApi.Routes, new {})',
+				routesTemplatesUrl: '@Url.HttpRouteUrl(AppRoutes.RoutesApi.RoutesTemplates, new {})',
+				daysTemplatesUrl: '@Url.HttpRouteUrl(AppRoutes.RoutesApi.DaysTemplates, new {})',
+				createRouteTemplateUrl: '@Url.HttpRouteUrl(AppRoutes.Templates.CreateRouteTemplate, new {})',
+				saveRouteTemplateUrl: '@Url.HttpRouteUrl(AppRoutes.Templates.SaveRouteTemplate, new {})',
+				deleteRouteTemplateUrl: '@Url.HttpRouteUrl(AppRoutes.Templates.DeleteRouteTemplate, new {})',
+				createDayTemplateUrl: '@Url.HttpRouteUrl(AppRoutes.Templates.CreateDayTemplate, new {})',
+				saveDayTemplateUrl: '@Url.HttpRouteUrl(AppRoutes.Templates.SaveDayTemplate, new {})',
+				deleteDayTemplateUrl: '@Url.HttpRouteUrl(AppRoutes.Templates.DeleteDayTemplate, new {})',
+				operatorScheduleGetDayUrl: '@Url.HttpRouteUrl(AppRoutes.OperatorSchedule.GetDay, new {})',
+				operatorScheduleSaveTemplateUrl: '@Url.HttpRouteUrl(AppRoutes.OperatorSchedule.SaveTemplate, new {})',
+				logoutUrl: '@Url.HttpRouteUrl(AppRoutes.Authentication.Logout, new {})'
+			};
+			app.value('options', options);
+		})();
+	</script>
+	@Html.Partial(false ? "UserRouting" : "OperatorRouting")
+	<script type='text/javascript' src='~/Scripts/application/controllers/common.js'></script>
+	<script type='text/javascript' src='~/Scripts/application/directives/directives.js'></script>
+</body>
+</html>

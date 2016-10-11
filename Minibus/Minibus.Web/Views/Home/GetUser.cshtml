@@ -1,0 +1,28 @@
+﻿<h2>User routes</h2>
+
+<br />
+<br />
+<br />
+
+<div class="container float-left search">
+	<div class="form-field">
+		<label for="from">Из</label>
+		<input type="text" id="from" data-ng-model="filter.from" />
+	</div>
+	<div class="form-field">
+		<label for="to">В</label>
+		<input type="text" id="to" data-ng-model="filter.to" />
+	</div>
+	<div class="form-field">
+		<input type="text" data-datepicker data-ng-model="filter.date" />
+	</div>
+	<br/>
+	<input type="button" value="Search" class="float-right" data-ng-click="search()" />
+</div>
+
+<div class="container center" data-ng-show="routes.length > 0" style="width: 500px">
+	<div data-ng-repeat="route in routes">
+		<span>{{route.Name}}</span>&nbsp;&nbsp;&nbsp;
+		<span>{{route.Time}}</span>
+	</div>
+</div>

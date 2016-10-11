@@ -1,0 +1,72 @@
+﻿@model Minibus.Web.Models.Routes.RouteTemplateModel
+<div class="container float-left search">
+    <form data-ajax-form="scheduleSearchForm" method="post" novalidate="novalidate">
+        <div class="form-field">
+            <label for="from">Из</label>
+            <input type="text" id="from" name="from" data-ng-model="filter.from" />
+        </div>
+        <div class="form-field">
+            <label for="to">В</label>
+            <input type="text" id="to" name="to" data-ng-model="filter.to" />
+        </div>
+        <div class="form-field">
+            <label for="date">Когда</label>
+            <input id="date" type="text" name="date" data-datepicker data-ng-model="filter.date" />
+        </div>
+        <br />
+        <input type="button" value="Search" class="float-right" data-ng-click="searchScheduleDay(scheduleSearchForm)" />
+    </form>
+</div>
+
+<div class="view-content float-left">
+    <form data-ajax-form="scheduleDayForm" method="post" novalidate="novalidate">
+        <div class="float-left container">
+            <div class="float-left">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.id, new Dictionary<string, object> { { "data-ng-model", "day.id" }, { "data-ng-value", "day.id" } })
+
+                <div data-ng-repeat="route in day.routes" class="route-template container float-left">
+                    <input type="hidden" name="routes[{{$index}}].id" data-ng-model="route.id" data-ng-value="route.id"></input>
+                    
+                    <div class="float-left">
+                        <div class="form-field float-left">
+                            @Html.LabelFor(m => m.time, "Время отправления:")
+                            <label data-ng-model="route.time" data-ng-value="route.time">{{route.time}}</label>
+                        </div>
+                        <div class="form-field float-right">
+                            @Html.LabelFor(m => m.placesCount, "Кол-во мест:")
+                            <label data-ng-model="route.placesCount" data-ng-value="route.placesCount">{{route.placesCount}}</label>
+                        </div>
+                    </div>
+                    <div class="float-left">
+                        <div class="form-field float-left">
+                            @Html.LabelFor(m => m.from, "Откуда:")
+                            <label data-ng-model="route.from" data-ng-value="route.from">{{route.from}}</label>
+                        </div>
+                        <div class="form-field float-right">
+                            @Html.LabelFor(m => m.to, "Куда:")
+                            <label data-ng-model="route.to" data-ng-value="route.to">{{route.to}}</label>
+                        </div>
+                    </div>
+                    <div class="float-left">
+                        <div class="form-field float-left">
+                            @Html.LabelFor(m => m.driver, "Водитель:")
+                            <label data-ng-model="route.driver" data-ng-value="route.driver">{{route.driver}}</label>
+                        </div>
+                        <div class="form-field float-right">
+                            @Html.LabelFor(m => m.driverPhone, "Телефон водителя:")
+                            <label data-ng-model="route.driverPhone" data-ng-value="route.driverPhone">{{route.driverPhone}}</label>
+                        </div>
+                    </div>
+                    <div class="float-left full-width">
+                        <div class="form-field float-left">
+                            @Html.LabelFor(m => m.carNumber, "Номер машины:")
+                            <label data-ng-model="route.carNumber" data-ng-value="route.carNumber">{{route.carNumber}}</label>
+                        </div>
+                    </div>
+
+                            </div>
+            </div>
+        </div>
+    </form>
+</div>

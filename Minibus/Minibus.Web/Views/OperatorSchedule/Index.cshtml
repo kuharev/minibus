@@ -1,0 +1,127 @@
+﻿@model Minibus.Web.Models.Routes.RouteTemplateModel
+<div class="container float-left search">
+	<form data-ajax-form="scheduleSearchForm" method="post" novalidate="novalidate">
+		<div class="form-field">
+			<label for="from">Из</label>
+			<input type="text" id="from" name="from" data-ng-model="filter.from" />
+		</div>
+		<div class="form-field">
+			<label for="to">В</label>
+			<input type="text" id="to" name="to" data-ng-model="filter.to" />
+		</div>
+		<div class="form-field">
+            <label for="date">Когда</label>
+			<input id="date" type="text" name="date" data-datepicker data-ng-model="filter.date" />
+		</div>
+		<br/>
+		<input type="button" value="Search" class="float-right" data-ng-click="searchScheduleDay(scheduleSearchForm)" />
+	</form>
+</div>
+<div class="view-content float-left">
+	<form data-ajax-form="scheduleDayForm" method="post" novalidate="novalidate">
+		<div class="float-left container">
+		    <div class="float-left">
+                <div class="float-left">
+                    <label for="dayTemplate">Выбранный шаблон:</label>
+                    <select name="dayTemplate" data-ng-model="dayTemplate" data-ng-options="dayTemplate.name for dayTemplate in daysTemplates"></select>
+                    <input type="hidden" id="date" name="date" data-ng-model="dateShedule" data-ng-value="dateShedule" />
+                </div>
+                <input type="button" class="float-left" value="Добавить в расписание" data-ng-click="addDayTemplateToSheduleDay(dayTemplate)" />
+                </div>
+			<div class="float-left">
+				@Html.AntiForgeryToken()
+				@Html.HiddenFor(m => m.id, new Dictionary<string, object> { { "data-ng-model", "day.id" }, { "data-ng-value", "day.id" } })
+
+				<div class="float-left full-width">
+					<hr />
+				</div>
+				<div class="route-template container float-left">
+					<div class="form-field float-left">
+						@Html.LabelFor(m => m.name, "Выбранный шаблон:")
+						<select data-ng-model="day.routeToDayTemplate" data-ng-options="route.name for route in routesTemplates" data-ignore-form="dayForm"></select><br>
+					</div>
+					<div class="float-left full-width">
+						<hr />
+					</div>
+					<div class="form-field float-left">
+						@Html.LabelFor(m => m.time, "Время отправления:")
+						@Html.TextBoxFor(m => m.time, new Dictionary<string, object> { { "data-ng-model", "day.routeToDayTemplate.time" }, { "data-ignore-form", "dayForm" } })
+					</div>
+					<div class="form-field float-right">
+						@Html.LabelFor(m => m.placesCount, "Кол-во мест:")
+						@Html.TextBoxFor(m => m.placesCount, new Dictionary<string, object> { { "data-ng-model", "day.routeToDayTemplate.placesCount" }, { "data-ignore-form", "dayForm" } })
+					</div>
+
+					<div class="form-field float-left">
+						@Html.LabelFor(m => m.from, "Откуда:")
+						@Html.TextBoxFor(m => m.from, new Dictionary<string, object> { { "data-ng-model", "day.routeToDayTemplate.from" }, { "data-ignore-form", "dayForm" } })
+					</div>
+					<div class="form-field float-right">
+						@Html.LabelFor(m => m.to, "Куда:")
+						@Html.TextBoxFor(m => m.to, new Dictionary<string, object> { { "data-ng-model", "day.routeToDayTemplate.to" }, { "data-ignore-form", "dayForm" } })
+					</div>
+
+					<div class="form-field float-left">
+						@Html.LabelFor(m => m.driver, "Водитель:")
+						@Html.TextBoxFor(m => m.driver, new Dictionary<string, object> { { "data-ng-model", "day.routeToDayTemplate.driver" }, { "data-ignore-form", "dayForm" } })
+					</div>
+					<div class="form-field float-right">
+						@Html.LabelFor(m => m.driverPhone, "Телефон водителя:")
+						@Html.TextBoxFor(m => m.driverPhone, new Dictionary<string, object> { { "data-ng-model", "day.routeToDayTemplate.driverPhone" }, { "data-ignore-form", "dayForm" } })
+					</div>
+
+					<div class="form-field float-left">
+						@Html.LabelFor(m => m.carNumber, "Номер машины:")
+						@Html.TextBoxFor(m => m.carNumber, new Dictionary<string, object> { { "data-ng-model", "day.routeToDayTemplate.carNumber" }, { "data-ignore-form", "dayForm" } })
+					</div>
+
+					<div class="float-cleaner">
+						<input type="button" class="float-right" data-ng-value="'Добавить маршрут'" data-ng-click="addRouteToSheduleDay(day, day.routeToDayTemplate)" />
+					</div>
+				</div>
+
+				<div data-ng-repeat="route in day.routes" class="route-template container float-left">
+					<input type="hidden" name="routes[{{$index}}].id" data-ng-model="route.id" data-ng-value="route.id"></input>
+
+					<div class="form-field float-left">
+						@Html.LabelFor(m => m.time, "Время отправления:")
+						<input type="text" name="routes[{{$index}}].time" data-ng-model="route.time" data-ng-value="route.time"></input>
+					</div>
+					<div class="form-field float-right">
+						@Html.LabelFor(m => m.placesCount, "Кол-во мест:")
+						<input type="text" name="routes[{{$index}}].placesCount" data-ng-model="route.placesCount" data-ng-value="route.placesCount"></input>
+					</div>
+
+					<div class="form-field float-left">
+						@Html.LabelFor(m => m.from, "Откуда:")
+						<input type="text" name="routes[{{$index}}].from" data-ng-model="route.from" data-ng-value="route.from"></input>
+					</div>
+					<div class="form-field float-right">
+						@Html.LabelFor(m => m.to, "Куда:")
+						<input type="text" name="routes[{{$index}}].to" data-ng-model="route.to" data-ng-value="route.to"></input>
+					</div>
+
+					<div class="form-field float-left">
+						@Html.LabelFor(m => m.driver, "Водитель:")
+						<input type="text" name="routes[{{$index}}].driver" data-ng-model="route.driver" data-ng-value="route.driver"></input>
+					</div>
+					<div class="form-field float-right">
+						@Html.LabelFor(m => m.driverPhone, "Телефон водителя:")
+						<input type="text" name="routes[{{$index}}].driverPhone" data-ng-model="route.driverPhone" data-ng-value="route.driverPhone"></input>
+					</div>
+
+					<div class="form-field float-left">
+						@Html.LabelFor(m => m.carNumber, "Номер машины:")
+						<input type="text" name="routes[{{$index}}].carNumber" data-ng-model="route.carNumber" data-ng-value="route.carNumber"></input>
+					</div>
+
+					<div class="float-cleaner">
+						<input type="button" class="delete-button float-right" value="Удалить маршрут" data-ng-click="deleteRouteFromSheduleDay(day, $index)" />
+					</div>
+
+				</div>
+			</div>
+			<input type="button" class="float-left" value="Сохранить" data-ng-click="addDayToSchedule(dayTemplate, filter.date, scheduleDayForm)" />
+		</div>
+	</form>
+</div>

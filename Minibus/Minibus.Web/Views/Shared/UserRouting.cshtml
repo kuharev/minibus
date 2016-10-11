@@ -1,0 +1,17 @@
+﻿@using Minibus.Web.Core
+<script>
+	app.config(function ($routeProvider) {
+		$routeProvider.when('/routes', {
+			templateUrl: '@Url.HttpRouteUrl(AppRoutes.Home.User, new {})',
+			controller: 'UserHomeController'
+		})
+		.when('/settings', {
+			templateUrl: '@Url.HttpRouteUrl(AppRoutes.Settings.User, new {})',
+			controller: 'SettingsController'
+		})
+			.otherwise({
+				redirectTo: '/routes'
+			});
+	});
+</script>
+<script type="text/javascript" src="~/Scripts/application/controllers/user.js"></script>

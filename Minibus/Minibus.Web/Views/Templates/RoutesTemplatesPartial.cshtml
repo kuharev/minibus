@@ -1,0 +1,58 @@
+﻿@model Minibus.Web.Models.Routes.RouteTemplateModel
+
+<div class="view-content float-left" data-ng-controller="RouteTemplateController">
+	<div>
+		<span class="title">Маршруты</span>
+	</div>
+	<div data-ng-repeat="route in routes" class="route-template container float-left">
+		<form data-ajax-form="routeForm" method="post" novalidate="novalidate">
+			@Html.AntiForgeryToken()
+			@Html.HiddenFor(m => m.id, new Dictionary<string, object> { { "data-ng-model", "route.id" }, { "data-ng-value", "route.id" } })
+			@Html.HiddenFor(m => m.templateId, new Dictionary<string, object> { { "data-ng-model", "route.templateId" }, { "data-ng-value", "route.templateId" } })
+			<div class="form-field float-left">
+				@Html.LabelFor(m => m.name, "Название шаблона:")
+				@Html.TextBoxFor(m => m.name, new Dictionary<string, object> { { "data-ng-model", "route.name" } })
+			</div>
+			<div class="float-left full-width">
+				<hr />
+			</div>
+
+			<div class="form-field float-left">
+				@Html.LabelFor(m => m.time, "Время отправления:")
+				@Html.TextBoxFor(m => m.time, new Dictionary<string, object> { { "data-ng-model", "route.time" } })
+			</div>
+			<div class="form-field float-right">
+				@Html.LabelFor(m => m.placesCount, "Кол-во мест:")
+				@Html.TextBoxFor(m => m.placesCount, new Dictionary<string, object> { { "data-ng-model", "route.placesCount" } })
+			</div>
+
+			<div class="form-field float-left">
+				@Html.LabelFor(m => m.from, "Откуда:")
+				@Html.TextBoxFor(m => m.from, new Dictionary<string, object> { { "data-ng-model", "route.from" } })
+			</div>
+			<div class="form-field float-right">
+				@Html.LabelFor(m => m.to, "Куда:")
+				@Html.TextBoxFor(m => m.to, new Dictionary<string, object> { { "data-ng-model", "route.to" } })
+			</div>
+
+			<div class="form-field float-left">
+				@Html.LabelFor(m => m.driver, "Водитель:")
+				@Html.TextBoxFor(m => m.driver, new Dictionary<string, object> { { "data-ng-model", "route.driver" } })
+			</div>
+			<div class="form-field float-right">
+				@Html.LabelFor(m => m.driverPhone, "Телефон водителя:")
+				@Html.TextBoxFor(m => m.driverPhone, new Dictionary<string, object> { { "data-ng-model", "route.driverPhone" } })
+			</div>
+
+			<div class="form-field float-left">
+				@Html.LabelFor(m => m.carNumber, "Номер машины:")
+				@Html.TextBoxFor(m => m.carNumber, new Dictionary<string, object> { { "data-ng-model", "route.carNumber" } })
+			</div>
+		</form>
+
+		<div class="float-cleaner">
+			<input type="button" class="float-right" data-ng-value="route.templateId ? 'Сохранить' : 'Добавить'" data-ng-click="saveTemplateRoute(route, routeForm, $index)" />
+			<input type="button" class="delete-button float-right" value="Удалить" data-ng-show="route.templateId" data-ng-click="deleteRoute(route, routeForm, $index)" />
+		</div>
+	</div>
+</div>

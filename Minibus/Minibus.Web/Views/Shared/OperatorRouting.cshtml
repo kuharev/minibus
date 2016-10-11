@@ -1,0 +1,25 @@
+﻿@using Minibus.Web.Core
+<script>
+	app.config(function ($routeProvider) {
+		$routeProvider.when('/routes', {
+			templateUrl: '@Url.HttpRouteUrl(AppRoutes.Home.Operator, new {})',
+			controller: 'OperatorHomeController'
+		})
+		.when('/settings', {
+			templateUrl: '@Url.HttpRouteUrl(AppRoutes.Settings.Operator, new {})',
+			controller: 'SettingsController'
+		})
+		.when('/templates', {
+			templateUrl: '@Url.HttpRouteUrl(AppRoutes.Templates.Operator, new {})',
+			controller: 'TemplatesController'
+		})
+		.when('/shedule', {
+			templateUrl: '@Url.HttpRouteUrl(AppRoutes.OperatorSchedule.Index, new {})',
+			controller: 'ScheduleController'
+		})
+		.otherwise({
+			redirectTo: '/routes'
+		});
+	});
+</script>
+<script type="text/javascript" src="~/Scripts/application/controllers/operator.js"></script>

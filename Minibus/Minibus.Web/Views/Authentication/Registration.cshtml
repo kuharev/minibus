@@ -1,0 +1,41 @@
+﻿@using Minibus.Web.Core
+@model Minibus.Web.Models.Authentication.RegistrationModel
+
+<div class="popup-container hidden-element">
+	<div class="popup-back">
+	</div>
+	<div class="popup" data-ng-controller="RegistrationController">
+		<div class="popup-header">
+			<span>Создание аккаунта</span>
+			<a class="close-popup-button close-button close-popup">
+				<img src="~/Content/img/close_popup.png" alt="close" />
+			</a>
+		</div>
+		<div class="popup-body">
+			@using (Html.BeginRouteForm(AppRoutes.Authentication.Registration, FormMethod.Post, new Dictionary<string, object> { { "data-ajax-form", "registrationForm" } }))
+			{
+				@Html.AntiForgeryToken()
+				<div class="form-field">
+					@Html.LabelFor(m => m.Login, "Логин")
+					@Html.TextBoxFor(m => m.Login)
+				</div>
+				<div class="form-field">
+					@Html.LabelFor(m => m.Email, "Емейл")
+					@Html.TextBoxFor(m => m.Email)
+				</div>
+				<div class="form-field">
+					@Html.LabelFor(m => m.Password, "Пароль")
+					@Html.PasswordFor(m => m.Password)
+				</div>
+				<div class="form-field">
+					@Html.LabelFor(m => m.ConfirmPassword, "Повторите пароль")
+					@Html.PasswordFor(m => m.ConfirmPassword)
+				</div>
+				<br />
+				<div>
+					<input type="button" value="Создать" data-ng-click="register()" /> &nbsp; {{message}}
+				</div>
+			}
+		</div>
+	</div>
+</div>
